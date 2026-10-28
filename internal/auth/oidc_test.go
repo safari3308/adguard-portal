@@ -62,8 +62,21 @@ func TestOIDCValidator(t *testing.T) {
 		case "/.well-known/openid-configuration":
 			w.Header().Set("Content-Type", "application/json")
 			_ = json.NewEncoder(w).Encode(map[string]string{
-				"jwks_uri": fmt.Sprintf("http://%s/keys", r.Host),
+				"jwks_uri":          fmt.Sprintf("http://%s/keys", r.Host),
+				"userinfo_endpoint": fmt.Sprintf("http://%s/userinfo", r.Host),
 			})
+		case "/userinfo":
+			authH := r.Header.Get("Authorization")
+			if authH == "Bearer opaque-token-123" {
+				w.Header().Set("Content-Type", "application/json")
+				_ = json.NewEncoder(w).Encode(map[string]string{
+					"sub":   "userinfo-sub-999",
+					"email": "userinfo@example.com",
+					"name":  "Userinfo User",
+				})
+				return
+			}
+			http.Error(w, "Unauthorized", http.StatusUnauthorized)
 		case "/keys":
 			w.Header().Set("Content-Type", "application/json")
 			resp := map[string]any{
@@ -250,5 +263,33 @@ func TestOIDCValidator(t *testing.T) {
 	uri, err := vFallback.discoverJWKSURI()
 	if err != nil || uri != tsFallback.URL+"/.well-known/jwks.json" {
 		t.Errorf("expected fallback jwks uri, got %s, err: %v", uri, err)
+	}
+
+	// Test 11: Opaque token via Userinfo endpoint (success + cache)
+	reqOpaque := httptest.NewRequest(http.MethodGet, "/api/me", nil)
+	reqOpaque.Header.Set("Authorization", "Bearer opaque-token-123")
+	recOpaque := httptest.NewRecorder()
+	handler.ServeHTTP(recOpaque, reqOpaque)
+	if recOpaque.Code != http.StatusOK {
+		t.Errorf("expected 200 on opaque token via userinfo, got %d: %s", recOpaque.Code, recOpaque.Body.String())
+	}
+	if recOpaque.Body.String() != "userinfo@example.com" {
+		t.Errorf("expected userinfo@example.com, got %s", recOpaque.Body.String())
+	}
+
+	// Test cached opaque token
+	recOpaqueCached := httptest.NewRecorder()
+	handler.ServeHTTP(recOpaqueCached, reqOpaque)
+	if recOpaqueCached.Code != http.StatusOK {
+		t.Errorf("expected 200 on cached opaque token, got %d", recOpaqueCached.Code)
+	}
+
+	// Test 12: Bad opaque token -> 401
+	reqBadOpaque := httptest.NewRequest(http.MethodGet, "/api/me", nil)
+	reqBadOpaque.Header.Set("Authorization", "Bearer bad-opaque-token")
+	recBadOpaque := httptest.NewRecorder()
+	handler.ServeHTTP(recBadOpaque, reqBadOpaque)
+	if recBadOpaque.Code != http.StatusUnauthorized {
+		t.Errorf("expected 401 on bad opaque token, got %d", recBadOpaque.Code)
 	}
 }

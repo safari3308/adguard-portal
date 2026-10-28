@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"context"
 	"crypto/rsa"
 	"encoding/base64"
 	"encoding/json"
@@ -26,8 +27,9 @@ type StandardOIDCClaims struct {
 }
 
 type openIDConfiguration struct {
-	Issuer  string `json:"issuer"`
-	JwksURI string `json:"jwks_uri"`
+	Issuer           string `json:"issuer"`
+	JwksURI          string `json:"jwks_uri"`
+	UserinfoEndpoint string `json:"userinfo_endpoint"`
 }
 
 type jwksKey struct {
@@ -43,24 +45,33 @@ type jwksResponse struct {
 	Keys []jwksKey `json:"keys"`
 }
 
+type cachedUserinfo struct {
+	claims    *StandardOIDCClaims
+	expiresAt time.Time
+}
+
 type Validator struct {
-	issuer    string
-	clientID  string
-	devMode   bool
-	userRepo  domain.UserRepository
-	jwksURI   string
-	jwksMu    sync.RWMutex
-	keys      map[string]*rsa.PublicKey
-	lastFetch time.Time
+	issuer           string
+	clientID         string
+	devMode          bool
+	userRepo         domain.UserRepository
+	jwksURI          string
+	userinfoEndpoint string
+	jwksMu           sync.RWMutex
+	keys             map[string]*rsa.PublicKey
+	lastFetch        time.Time
+	userinfoCache    map[string]cachedUserinfo
+	userinfoMu       sync.RWMutex
 }
 
 func NewValidator(issuer, clientID string, devMode bool, userRepo domain.UserRepository) *Validator {
 	return &Validator{
-		issuer:   strings.TrimRight(issuer, "/"),
-		clientID: clientID,
-		devMode:  devMode,
-		userRepo: userRepo,
-		keys:     make(map[string]*rsa.PublicKey),
+		issuer:        strings.TrimRight(issuer, "/"),
+		clientID:      clientID,
+		devMode:       devMode,
+		userRepo:      userRepo,
+		keys:          make(map[string]*rsa.PublicKey),
+		userinfoCache: make(map[string]cachedUserinfo),
 	}
 }
 
@@ -95,8 +106,12 @@ func (v *Validator) Middleware(next http.Handler) http.Handler {
 
 		claims, err := v.verifyToken(tokenString)
 		if err != nil {
-			http.Error(w, fmt.Sprintf(`{"error":"unauthorized: %s"}`, err.Error()), http.StatusUnauthorized)
-			return
+			var userinfoErr error
+			claims, userinfoErr = v.verifyViaUserinfo(r.Context(), tokenString)
+			if userinfoErr != nil {
+				http.Error(w, fmt.Sprintf(`{"error":"unauthorized: %s"}`, err.Error()), http.StatusUnauthorized)
+				return
+			}
 		}
 
 		userEmail := claims.Email
@@ -206,6 +221,9 @@ func (v *Validator) discoverJWKSURI() (string, error) {
 		var doc openIDConfiguration
 		if err := json.NewDecoder(resp.Body).Decode(&doc); err == nil && doc.JwksURI != "" {
 			v.jwksURI = doc.JwksURI
+			if doc.UserinfoEndpoint != "" {
+				v.userinfoEndpoint = doc.UserinfoEndpoint
+			}
 			return v.jwksURI, nil
 		}
 	} else if resp != nil {
@@ -297,4 +315,61 @@ func parseRSAPublicKey(nStr, eStr string) (*rsa.PublicKey, error) {
 		N: n,
 		E: int(eInt),
 	}, nil
+}
+
+func (v *Validator) verifyViaUserinfo(ctx context.Context, tokenStr string) (*StandardOIDCClaims, error) {
+	if tokenStr == "" {
+		return nil, errors.New("empty token")
+	}
+
+	v.userinfoMu.RLock()
+	if cached, ok := v.userinfoCache[tokenStr]; ok && time.Now().Before(cached.expiresAt) {
+		v.userinfoMu.RUnlock()
+		return cached.claims, nil
+	}
+	v.userinfoMu.RUnlock()
+
+	if v.userinfoEndpoint == "" {
+		_, _ = v.discoverJWKSURI()
+	}
+	if v.userinfoEndpoint == "" {
+		if v.issuer == "" {
+			return nil, errors.New("OIDC_ISSUER not configured")
+		}
+		v.userinfoEndpoint = fmt.Sprintf("%s/oidc/v1/userinfo", v.issuer)
+	}
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, v.userinfoEndpoint, nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("Authorization", "Bearer "+tokenStr)
+
+	client := &http.Client{Timeout: 5 * time.Second}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, fmt.Errorf("userinfo request failed: %w", err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("userinfo endpoint returned status %d", resp.StatusCode)
+	}
+
+	var claims StandardOIDCClaims
+	if err := json.NewDecoder(resp.Body).Decode(&claims); err != nil {
+		return nil, fmt.Errorf("failed to decode userinfo response: %w", err)
+	}
+	if claims.Subject == "" {
+		return nil, errors.New("userinfo response missing subject")
+	}
+
+	v.userinfoMu.Lock()
+	v.userinfoCache[tokenStr] = cachedUserinfo{
+		claims:    &claims,
+		expiresAt: time.Now().Add(2 * time.Minute),
+	}
+	v.userinfoMu.Unlock()
+
+	return &claims, nil
 }

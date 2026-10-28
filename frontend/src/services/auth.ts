@@ -34,7 +34,22 @@ export async function getAccessToken(): Promise<string | null> {
     return null;
   }
   const user = await userManager.getUser();
-  return user?.access_token || user?.id_token || null;
+  if (!user) {
+    return null;
+  }
+
+  // ID Token is guaranteed by OpenID Connect to be a signed JWT containing user identity claims (sub, email, name).
+  // Many OIDC providers (Zitadel, Google, Auth0) issue opaque strings for access_token by default,
+  // which will fail local backend JWT signature verification.
+  // Prefer id_token if it is a 3-part JWT; otherwise fall back to access_token.
+  const isJwt = (t?: string | null): t is string => !!t && t.split('.').length === 3;
+  if (isJwt(user.id_token)) {
+    return user.id_token;
+  }
+  if (isJwt(user.access_token)) {
+    return user.access_token;
+  }
+  return user.id_token || user.access_token || null;
 }
 
 export function setDevToken(token: string | null) {

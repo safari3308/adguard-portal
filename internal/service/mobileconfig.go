@@ -29,6 +29,8 @@ const mobileConfigTemplate = `<?xml version="1.0" encoding="UTF-8"?>
     <string>com.adguardportal.doh.{{ .ClientToken }}</string>
     <key>PayloadOrganization</key>
     <string>AdGuard Portal</string>
+    <key>PayloadScope</key>
+    <string>System</string>
     <key>PayloadType</key>
     <string>Configuration</string>
     <key>PayloadUUID</key>
@@ -40,6 +42,8 @@ const mobileConfigTemplate = `<?xml version="1.0" encoding="UTF-8"?>
         <dict>
             <key>PayloadType</key>
             <string>com.apple.dnsSettings.managed</string>
+            <key>PayloadScope</key>
+            <string>System</string>
             <key>PayloadDisplayName</key>
             <string>AdGuard DoH - {{ .DeviceName }}</string>
             <key>PayloadDescription</key>

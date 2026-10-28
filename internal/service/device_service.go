@@ -177,7 +177,10 @@ func (s *DeviceService) GenerateMobileConfig(ctx context.Context, userID, device
 		return nil, err
 	}
 	if s.signer != nil {
-		if signed, err := s.signer.Sign(raw); err == nil {
+		signed, err := s.signer.Sign(raw)
+		if err != nil {
+			fmt.Printf("ERROR: Failed to sign mobileconfig for device %s: %v\n", deviceID, err)
+		} else {
 			return signed, nil
 		}
 	}

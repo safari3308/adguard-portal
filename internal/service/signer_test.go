@@ -136,6 +136,12 @@ func TestPKCS7Signer(t *testing.T) {
 		t.Fatalf("NewPKCS7SignerFromFiles failed: %v", err)
 	}
 
+	// Test glob expansion in file path (e.g. *.pem)
+	globCert := filepath.Join(tmpDir, "*.pem")
+	if resolved := resolvePath(globCert); resolved == "" || resolved == globCert {
+		t.Errorf("expected globCert to resolve to a matched file, got: %s", resolved)
+	}
+
 	// Test empty file paths
 	emptySigner, err := NewPKCS7SignerFromFiles("", "")
 	if err != nil || emptySigner != nil {

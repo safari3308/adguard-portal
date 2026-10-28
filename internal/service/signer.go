@@ -7,9 +7,26 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"path/filepath"
+	"strings"
 
 	"go.mozilla.org/pkcs7"
 )
+
+func resolvePath(p string) string {
+	// 1. If path exists as-is, use it directly (e.g. literal filename)
+	if _, err := os.Stat(p); err == nil {
+		return p
+	}
+	// 2. If it contains wildcard characters, expand via glob
+	if strings.ContainsAny(p, "*?[]") {
+		matches, err := filepath.Glob(p)
+		if err == nil && len(matches) > 0 {
+			return matches[0]
+		}
+	}
+	return p
+}
 
 type ProfileSigner interface {
 	Sign(rawXML []byte) ([]byte, error)
@@ -27,14 +44,17 @@ func NewPKCS7SignerFromFiles(certPath, keyPath string) (*PKCS7Signer, error) {
 		return nil, nil
 	}
 
-	certPEM, err := os.ReadFile(certPath)
+	resolvedCertPath := resolvePath(certPath)
+	resolvedKeyPath := resolvePath(keyPath)
+
+	certPEM, err := os.ReadFile(resolvedCertPath)
 	if err != nil {
-		return nil, fmt.Errorf("failed to read signing cert from %s: %w", certPath, err)
+		return nil, fmt.Errorf("failed to read signing cert from %s (resolved from %s): %w", resolvedCertPath, certPath, err)
 	}
 
-	keyPEM, err := os.ReadFile(keyPath)
+	keyPEM, err := os.ReadFile(resolvedKeyPath)
 	if err != nil {
-		return nil, fmt.Errorf("failed to read signing key from %s: %w", keyPath, err)
+		return nil, fmt.Errorf("failed to read signing key from %s (resolved from %s): %w", resolvedKeyPath, keyPath, err)
 	}
 
 	return NewPKCS7Signer(certPEM, keyPEM)

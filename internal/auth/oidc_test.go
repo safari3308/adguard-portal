@@ -140,6 +140,14 @@ func TestOIDCValidator(t *testing.T) {
 		t.Errorf("unexpected dev user email: %s", rec3.Body.String())
 	}
 
+	// Test 3b: Query param token (for mobileconfig direct downloads)
+	req3b := httptest.NewRequest(http.MethodGet, "/api/devices/123/mobileconfig?token=dev-user-admin", nil)
+	rec3b := httptest.NewRecorder()
+	handler.ServeHTTP(rec3b, req3b)
+	if rec3b.Code != http.StatusOK {
+		t.Errorf("expected 200 on query param token, got %d", rec3b.Code)
+	}
+
 	// Test 4: Valid RS256 token
 	token := jwt.NewWithClaims(jwt.SigningMethodRS256, &StandardOIDCClaims{
 		Email: "alice@example.com",

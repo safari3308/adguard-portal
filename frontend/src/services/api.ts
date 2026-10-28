@@ -83,6 +83,10 @@ export async function fetchServices(): Promise<BlockedService[]> {
   return res.json();
 }
 
-export function getMobileConfigUrl(deviceId: string): string {
+export async function getMobileConfigUrl(deviceId: string): Promise<string> {
+  const token = await getAccessToken();
+  if (token) {
+    return `/api/devices/${deviceId}/mobileconfig?token=${encodeURIComponent(token)}`;
+  }
   return `/api/devices/${deviceId}/mobileconfig`;
 }

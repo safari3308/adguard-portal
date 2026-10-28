@@ -12,7 +12,12 @@ interface SetupModalProps {
 
 export const SetupModal: React.FC<SetupModalProps> = ({ device, dohDomain, onClose }) => {
   const [copied, setCopied] = useState(false);
+  const [mobileConfigUrl, setMobileConfigUrl] = useState<string>('');
   const dohUrl = `https://${dohDomain}/dns-query/${device.client_token}`;
+
+  React.useEffect(() => {
+    getMobileConfigUrl(device.id).then(setMobileConfigUrl);
+  }, [device.id]);
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(dohUrl);
@@ -87,8 +92,16 @@ export const SetupModal: React.FC<SetupModalProps> = ({ device, dohDomain, onClo
                   </div>
                 </div>
                 <a
-                  href={getMobileConfigUrl(device.id)}
+                  href={mobileConfigUrl || '#'}
                   download
+                  onClick={async (e) => {
+                    if (!mobileConfigUrl) {
+                      e.preventDefault();
+                      const url = await getMobileConfigUrl(device.id);
+                      setMobileConfigUrl(url);
+                      window.location.href = url;
+                    }
+                  }}
                   className="flex items-center gap-1.5 px-3 py-2 bg-slate-900 hover:bg-slate-800 dark:bg-slate-100 dark:hover:bg-slate-200 text-white dark:text-slate-900 text-xs font-medium rounded-lg transition shrink-0"
                 >
                   <Download className="w-3.5 h-3.5" />

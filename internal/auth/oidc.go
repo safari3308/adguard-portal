@@ -79,19 +79,21 @@ func NewValidator(issuer, internalURL, clientID string, devMode bool, userRepo d
 
 func (v *Validator) Middleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		var tokenString string
 		authHeader := r.Header.Get("Authorization")
-		if authHeader == "" {
+		if authHeader != "" {
+			parts := strings.SplitN(authHeader, " ", 2)
+			if len(parts) != 2 || !strings.EqualFold(parts[0], "Bearer") {
+				http.Error(w, `{"error":"invalid authorization format"}`, http.StatusUnauthorized)
+				return
+			}
+			tokenString = parts[1]
+		} else if tokenParam := r.URL.Query().Get("token"); tokenParam != "" {
+			tokenString = tokenParam
+		} else {
 			http.Error(w, `{"error":"missing authorization header"}`, http.StatusUnauthorized)
 			return
 		}
-
-		parts := strings.SplitN(authHeader, " ", 2)
-		if len(parts) != 2 || !strings.EqualFold(parts[0], "Bearer") {
-			http.Error(w, `{"error":"invalid authorization format"}`, http.StatusUnauthorized)
-			return
-		}
-
-		tokenString := parts[1]
 
 		// Support Mock/Dev Mode token for rapid local testing
 		if v.devMode && strings.HasPrefix(tokenString, "dev-user-") {

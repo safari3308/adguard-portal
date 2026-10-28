@@ -16,6 +16,7 @@ type Config struct {
 	AGHUser           string
 	AGHPassword       string
 	OIDCIssuer        string
+	OIDCInternalURL   string
 	OIDCClientID      string
 	OIDCClientSecret  string
 	OIDCScopes        string
@@ -38,6 +39,7 @@ func Load() (*Config, error) {
 
 	// Generic standard OIDC configuration (with backwards compatible fallbacks)
 	oidcIssuer := getEnv("OIDC_ISSUER", getEnv("ZITADEL_ISSUER", ""))
+	oidcInternalURL := getEnv("OIDC_INTERNAL_URL", "")
 	oidcClientID := getEnv("OIDC_CLIENT_ID", getEnv("ZITADEL_CLIENT_ID", ""))
 	oidcClientSecret := getEnv("OIDC_CLIENT_SECRET", getEnv("ZITADEL_CLIENT_SECRET", ""))
 	oidcScopes := getEnv("OIDC_SCOPES", "openid profile email")
@@ -55,6 +57,7 @@ func Load() (*Config, error) {
 		AGHUser:           aghUser,
 		AGHPassword:       aghPassword,
 		OIDCIssuer:        oidcIssuer,
+		OIDCInternalURL:   oidcInternalURL,
 		OIDCClientID:      oidcClientID,
 		OIDCClientSecret:  oidcClientSecret,
 		OIDCScopes:        oidcScopes,

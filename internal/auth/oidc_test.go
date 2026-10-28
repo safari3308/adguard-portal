@@ -99,7 +99,7 @@ func TestOIDCValidator(t *testing.T) {
 	defer ts.Close()
 
 	repo := &mockUserRepo{users: make(map[string]*domain.User)}
-	validator := NewValidator(ts.URL, "test-client-id", true, repo)
+	validator := NewValidator(ts.URL, "", "test-client-id", true, repo)
 
 	handler := validator.Middleware(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		u := UserFromContext(r.Context())
@@ -244,7 +244,7 @@ func TestOIDCValidator(t *testing.T) {
 	}
 
 	// Test 9: Empty issuer discoverJWKSURI
-	vNoIssuer := NewValidator("", "client", false, repo)
+	vNoIssuer := NewValidator("", "", "client", false, repo)
 	if _, err := vNoIssuer.discoverJWKSURI(); err == nil {
 		t.Errorf("expected error for empty issuer in discoverJWKSURI, got nil")
 	}
@@ -259,7 +259,7 @@ func TestOIDCValidator(t *testing.T) {
 	}))
 	defer tsFallback.Close()
 
-	vFallback := NewValidator(tsFallback.URL, "client", false, repo)
+	vFallback := NewValidator(tsFallback.URL, "", "client", false, repo)
 	uri, err := vFallback.discoverJWKSURI()
 	if err != nil || uri != tsFallback.URL+"/.well-known/jwks.json" {
 		t.Errorf("expected fallback jwks uri, got %s, err: %v", uri, err)

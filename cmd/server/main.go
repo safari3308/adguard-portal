@@ -52,7 +52,7 @@ func main() {
 	deviceSvc := service.NewDeviceService(deviceRepo, aghClient, cfg.MaxDevicesPerUser, cfg.DOHDomain)
 
 	// Auth Validator (Standard OIDC)
-	authValidator := auth.NewValidator(cfg.OIDCIssuer, cfg.OIDCClientID, cfg.DevMode, userRepo)
+	authValidator := auth.NewValidator(cfg.OIDCIssuer, cfg.OIDCInternalURL, cfg.OIDCClientID, cfg.DevMode, userRepo)
 
 	// Handlers
 	userH := handler.NewUserHandler()

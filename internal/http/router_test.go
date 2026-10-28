@@ -34,7 +34,7 @@ func TestNewRouter(t *testing.T) {
 		DevMode:   true,
 	})
 
-	authValidator := auth.NewValidator("https://issuer.local", "client-id", true, userRepo)
+	authValidator := auth.NewValidator("https://issuer.local", "", "client-id", true, userRepo)
 
 	router := NewRouter(RouterConfig{
 		UserHandler:    userHandler,

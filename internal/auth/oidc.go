@@ -52,6 +52,7 @@ type cachedUserinfo struct {
 
 type Validator struct {
 	issuer           string
+	internalURL      string
 	clientID         string
 	devMode          bool
 	userRepo         domain.UserRepository
@@ -64,9 +65,10 @@ type Validator struct {
 	userinfoMu       sync.RWMutex
 }
 
-func NewValidator(issuer, clientID string, devMode bool, userRepo domain.UserRepository) *Validator {
+func NewValidator(issuer, internalURL, clientID string, devMode bool, userRepo domain.UserRepository) *Validator {
 	return &Validator{
 		issuer:        strings.TrimRight(issuer, "/"),
+		internalURL:   strings.TrimRight(internalURL, "/"),
 		clientID:      clientID,
 		devMode:       devMode,
 		userRepo:      userRepo,
@@ -203,26 +205,40 @@ func (v *Validator) getKey(kid string) (*rsa.PublicKey, error) {
 	return key, nil
 }
 
+func (v *Validator) rewriteURL(originalURL string) string {
+	if v.internalURL == "" || v.issuer == "" {
+		return originalURL
+	}
+	if strings.HasPrefix(originalURL, v.issuer) {
+		return v.internalURL + strings.TrimPrefix(originalURL, v.issuer)
+	}
+	return originalURL
+}
+
 func (v *Validator) discoverJWKSURI() (string, error) {
 	if v.jwksURI != "" {
 		return v.jwksURI, nil
 	}
-	if v.issuer == "" {
+	baseURL := v.internalURL
+	if baseURL == "" {
+		baseURL = v.issuer
+	}
+	if baseURL == "" {
 		return "", errors.New("OIDC_ISSUER not configured")
 	}
 
 	client := &http.Client{Timeout: 5 * time.Second}
 
 	// 1. Standard OIDC Discovery: /.well-known/openid-configuration
-	discoveryURL := fmt.Sprintf("%s/.well-known/openid-configuration", v.issuer)
+	discoveryURL := fmt.Sprintf("%s/.well-known/openid-configuration", baseURL)
 	resp, err := client.Get(discoveryURL)
 	if err == nil && resp.StatusCode == http.StatusOK {
 		defer resp.Body.Close()
 		var doc openIDConfiguration
 		if err := json.NewDecoder(resp.Body).Decode(&doc); err == nil && doc.JwksURI != "" {
-			v.jwksURI = doc.JwksURI
+			v.jwksURI = v.rewriteURL(doc.JwksURI)
 			if doc.UserinfoEndpoint != "" {
-				v.userinfoEndpoint = doc.UserinfoEndpoint
+				v.userinfoEndpoint = v.rewriteURL(doc.UserinfoEndpoint)
 			}
 			return v.jwksURI, nil
 		}
@@ -232,9 +248,9 @@ func (v *Validator) discoverJWKSURI() (string, error) {
 
 	// 2. Fallbacks for providers without discovery
 	fallbacks := []string{
-		fmt.Sprintf("%s/oauth/v2/keys", v.issuer),
-		fmt.Sprintf("%s/.well-known/jwks.json", v.issuer),
-		fmt.Sprintf("%s/keys", v.issuer),
+		fmt.Sprintf("%s/oauth/v2/keys", baseURL),
+		fmt.Sprintf("%s/.well-known/jwks.json", baseURL),
+		fmt.Sprintf("%s/keys", baseURL),
 	}
 
 	for _, u := range fallbacks {
@@ -250,7 +266,7 @@ func (v *Validator) discoverJWKSURI() (string, error) {
 	}
 
 	// Default fallback
-	v.jwksURI = fmt.Sprintf("%s/.well-known/jwks.json", v.issuer)
+	v.jwksURI = fmt.Sprintf("%s/.well-known/jwks.json", baseURL)
 	return v.jwksURI, nil
 }
 
@@ -333,10 +349,14 @@ func (v *Validator) verifyViaUserinfo(ctx context.Context, tokenStr string) (*St
 		_, _ = v.discoverJWKSURI()
 	}
 	if v.userinfoEndpoint == "" {
-		if v.issuer == "" {
+		baseURL := v.internalURL
+		if baseURL == "" {
+			baseURL = v.issuer
+		}
+		if baseURL == "" {
 			return nil, errors.New("OIDC_ISSUER not configured")
 		}
-		v.userinfoEndpoint = fmt.Sprintf("%s/oidc/v1/userinfo", v.issuer)
+		v.userinfoEndpoint = fmt.Sprintf("%s/oidc/v1/userinfo", baseURL)
 	}
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, v.userinfoEndpoint, nil)

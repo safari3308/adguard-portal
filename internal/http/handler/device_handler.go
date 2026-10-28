@@ -18,6 +18,7 @@ type downloadTicket struct {
 	userID    string
 	deviceID  string
 	expiresAt time.Time
+	usesLeft  int
 }
 
 type DeviceHandler struct {
@@ -163,7 +164,8 @@ func (h *DeviceHandler) CreateTicket(w http.ResponseWriter, r *http.Request) {
 	h.tickets[ticket] = downloadTicket{
 		userID:    user.ID,
 		deviceID:  id,
-		expiresAt: now.Add(60 * time.Second),
+		expiresAt: now.Add(2 * time.Minute),
+		usesLeft:  5,
 	}
 	h.mu.Unlock()
 
@@ -181,7 +183,12 @@ func (h *DeviceHandler) DownloadMobileConfig(w http.ResponseWriter, r *http.Requ
 		h.mu.Lock()
 		info, exists := h.tickets[ticket]
 		if exists {
-			delete(h.tickets, ticket) // single-use
+			info.usesLeft--
+			if info.usesLeft <= 0 {
+				delete(h.tickets, ticket)
+			} else {
+				h.tickets[ticket] = info
+			}
 		}
 		h.mu.Unlock()
 

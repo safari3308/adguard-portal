@@ -40,6 +40,10 @@ const mobileConfigTemplate = `<?xml version="1.0" encoding="UTF-8"?>
         <dict>
             <key>PayloadType</key>
             <string>com.apple.dnsSettings.managed</string>
+            <key>PayloadDisplayName</key>
+            <string>AdGuard DoH - {{ .DeviceName }}</string>
+            <key>PayloadDescription</key>
+            <string>Encrypted DNS over HTTPS configuration for {{ .DeviceName }}</string>
             <key>PayloadIdentifier</key>
             <string>com.adguardportal.doh.{{ .ClientToken }}.dnsSettings</string>
             <key>PayloadUUID</key>

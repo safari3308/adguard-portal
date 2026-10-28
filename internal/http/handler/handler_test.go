@@ -252,11 +252,19 @@ func TestDeviceHandler(t *testing.T) {
 		t.Errorf("expected 200 for ticket download, got %d", recTicketDl.Code)
 	}
 
-	// Ticket is single-use, second attempt should fail 401
-	recTicketDl2 := httptest.NewRecorder()
-	h.DownloadMobileConfig(recTicketDl2, reqTicketDl)
-	if recTicketDl2.Code != http.StatusUnauthorized {
-		t.Errorf("expected 401 on reused ticket, got %d", recTicketDl2.Code)
+	// Ticket allows multiple reads (e.g. for iOS Chrome double-fetch), exhausts after usesLeft
+	for i := 0; i < 4; i++ {
+		rec := httptest.NewRecorder()
+		h.DownloadMobileConfig(rec, reqTicketDl)
+		if rec.Code != http.StatusOK {
+			t.Errorf("expected 200 on retry %d, got %d", i, rec.Code)
+		}
+	}
+	// 6th attempt should be exhausted
+	recTicketExhausted := httptest.NewRecorder()
+	h.DownloadMobileConfig(recTicketExhausted, reqTicketDl)
+	if recTicketExhausted.Code != http.StatusUnauthorized {
+		t.Errorf("expected 401 on exhausted ticket, got %d", recTicketExhausted.Code)
 	}
 
 	// CreateTicket - unauthorized

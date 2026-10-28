@@ -1,0 +1,175 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2026-10-28 10:30+0700\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: vi\n"
+
+msgid "AdGuard Portal"
+msgstr "Cổng AdGuard"
+
+msgid "Personal DNS-over-HTTPS"
+msgstr "DNS-over-HTTPS Cá nhân"
+
+msgid "Logout"
+msgstr "Đăng xuất"
+
+msgid "Your Devices"
+msgstr "Thiết bị của bạn"
+
+msgid "Each device receives an isolated, authenticated DoH endpoint with custom filtering."
+msgstr "Mỗi thiết bị nhận một đường dẫn DoH riêng biệt, xác thực kèm bộ lọc tuỳ chỉnh."
+
+msgid "Add Device"
+msgstr "Thêm thiết bị"
+
+msgid "You have reached the maximum device quota"
+msgstr "Bạn đã đạt giới hạn thiết bị tối đa"
+
+msgid "Delete an inactive device to add another."
+msgstr "Hãy xoá thiết bị không dùng để thêm mới."
+
+msgid "No devices configured yet"
+msgstr "Chưa có thiết bị nào"
+
+msgid "Register your phone, tablet, laptop, or home browser to obtain your secure DoH URL."
+msgstr "Đăng ký điện thoại, máy tính bảng, máy tính hoặc trình duyệt để lấy liên kết DoH bảo mật."
+
+msgid "Register Your First Device"
+msgstr "Đăng ký thiết bị đầu tiên"
+
+msgid "Ad & Tracker Blocking"
+msgstr "Chặn quảng cáo & theo dõi"
+
+msgid "SafeSearch Enforced"
+msgstr "Bắt buộc Tìm kiếm an toàn"
+
+msgid "Parental Control"
+msgstr "Kiểm soát phụ huynh"
+
+msgid "Rules"
+msgstr "Quy tắc"
+
+msgid "Setup Guide"
+msgstr "Hướng dẫn cài đặt"
+
+msgid "Delete Device"
+msgstr "Xoá thiết bị"
+
+msgid "Are you sure you want to delete this device? This will revoke its DoH access."
+msgstr "Bạn có chắc chắn muốn xoá thiết bị này? Quyền truy cập DoH sẽ bị thu hồi."
+
+msgid "Connect"
+msgstr "Kết nối"
+
+msgid "Device Token:"
+msgstr "Mã thiết bị:"
+
+msgid "Your Personalized DoH URL"
+msgstr "Liên kết DoH riêng của bạn"
+
+msgid "Copy"
+msgstr "Sao chép"
+
+msgid "Copied"
+msgstr "Đã sao chép"
+
+msgid "Apple iOS & macOS (1-Click Profile)"
+msgstr "Apple iOS & macOS (Cấu hình 1 chạm)"
+
+msgid "Installs native encrypted DNS without installing any third-party apps."
+msgstr "Cài đặt DNS mã hoá trực tiếp vào hệ thống mà không cần cài ứng dụng bên thứ 3."
+
+msgid "Download .mobileconfig"
+msgstr "Tải tệp .mobileconfig"
+
+msgid "Android (Private DNS)"
+msgstr "Android (DNS riêng tư)"
+
+msgid "Settings → Network & internet → Private DNS → Custom hostname:"
+msgstr "Cài đặt → Mạng & Internet → DNS riêng tư → Tên máy chủ nhà cung cấp:"
+
+msgid "Chrome, Firefox & Edge (Secure DNS)"
+msgstr "Chrome, Firefox & Edge (DNS bảo mật)"
+
+msgid "Browser Settings → Privacy & Security → Use Secure DNS → Custom provider: paste the personalized DoH URL above."
+msgstr "Cài đặt trình duyệt → Quyền riêng tư & bảo mật → Sử dụng DNS bảo mật → Nhà cung cấp tuỳ chỉnh: dán URL DoH phía trên."
+
+msgid "Done"
+msgstr "Hoàn tất"
+
+msgid "Customize Filtering"
+msgstr "Tuỳ chỉnh bộ lọc"
+
+msgid "Tune blocked services and domain overrides"
+msgstr "Tuỳ chỉnh các dịch vụ bị chặn và tên miền ngoại lệ"
+
+msgid "Block Pre-configured Services"
+msgstr "Chặn dịch vụ có sẵn"
+
+msgid "One-click blocking evaluated directly by AdGuard Home with zero performance loss."
+msgstr "Chặn nhanh với 1 cú click, được xử lý trực tiếp bởi AdGuard Home không ảnh hưởng hiệu năng."
+
+msgid "Custom Blocked Domains"
+msgstr "Tên miền tự chặn"
+
+msgid "Blocks specific domains exclusively on this device (e.g. distracting-site.com)."
+msgstr "Chặn tên miền cụ thể chỉ trên thiết bị này (vd: distracting-site.com)."
+
+msgid "Allowlist Overrides"
+msgstr "Danh sách cho phép bỏ chặn"
+
+msgid "Unblocks domains that might be blocked by global AdGuard filter lists."
+msgstr "Bỏ chặn những tên miền có thể bị chặn bởi danh sách lọc chung của AdGuard."
+
+msgid "Add"
+msgstr "Thêm"
+
+msgid "Cancel"
+msgstr "Huỷ"
+
+msgid "Applying..."
+msgstr "Đang lưu..."
+
+msgid "Save Settings"
+msgstr "Lưu cấu hình"
+
+msgid "Add New Device"
+msgstr "Thêm thiết bị mới"
+
+msgid "Device Name"
+msgstr "Tên thiết bị"
+
+msgid "e.g. Dominic's iPhone or Work Laptop"
+msgstr "Ví dụ: iPhone của tôi hoặc Laptop làm việc"
+
+msgid "A unique DoH URL token will be automatically assigned to this device."
+msgstr "Một mã định danh DoH độc nhất sẽ được gán tự động cho thiết bị này."
+
+msgid "Registering..."
+msgstr "Đang đăng ký..."
+
+msgid "Register Device"
+msgstr "Đăng ký thiết bị"
+
+msgid "Sign in with"
+msgstr "Đăng nhập bằng"
+
+msgid "Zero-trust encrypted DNS. Only authorized accounts authenticated via your identity provider can register devices and query DoH."
+msgstr "DNS mã hoá Zero-trust. Chỉ những tài khoản được xác thực qua hệ thống định danh mới có thể tạo thiết bị và truy vấn DoH."
+
+msgid "Quick Login as Developer"
+msgstr "Đăng nhập nhanh cho Nhà phát triển"
+
+msgid "Dev Mode Enabled"
+msgstr "Đang bật chế độ Nhà phát triển"
+
+msgid "Connecting to AdGuard Portal..."
+msgstr "Đang kết nối tới Cổng AdGuard..."
+
+msgid "AdGuard DoH Hostname:"
+msgstr "Tên miền AdGuard DoH:"
+
+msgid "Source Code on GitHub"
+msgstr "Mã nguồn trên GitHub"

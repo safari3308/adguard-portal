@@ -1,0 +1,38 @@
+# Binaries
+bin/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+/dist/
+web/dist/*
+!web/dist/.gitkeep
+*.out
+
+# SQLite databases
+*.db
+*.db-shm
+*.db-wal
+data/
+
+# Environment files
+.env
+.env.local
+
+# Node / Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.pnpm-store/
+web/dist/*
+!web/dist/.gitkeep
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.tsbuildinfo

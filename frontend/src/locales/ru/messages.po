@@ -1,0 +1,175 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2026-10-28 10:30+0700\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ru\n"
+
+msgid "AdGuard Portal"
+msgstr "Портал AdGuard"
+
+msgid "Personal DNS-over-HTTPS"
+msgstr "Персональный DNS-over-HTTPS"
+
+msgid "Logout"
+msgstr "Выйти"
+
+msgid "Your Devices"
+msgstr "Ваши устройства"
+
+msgid "Each device receives an isolated, authenticated DoH endpoint with custom filtering."
+msgstr "Каждое устройство получает изолированную точку входа DoH с индивидуальной фильтрацией."
+
+msgid "Add Device"
+msgstr "Добавить устройство"
+
+msgid "You have reached the maximum device quota"
+msgstr "Достигнут лимит устройств"
+
+msgid "Delete an inactive device to add another."
+msgstr "Удалите неактивное устройство для добавления нового."
+
+msgid "No devices configured yet"
+msgstr "Устройства пока не настроены"
+
+msgid "Register your phone, tablet, laptop, or home browser to obtain your secure DoH URL."
+msgstr "Зарегистрируйте смартфон, планшет или ПК, чтобы получить персональный адрес DoH."
+
+msgid "Register Your First Device"
+msgstr "Зарегистрируйте первое устройство"
+
+msgid "Ad & Tracker Blocking"
+msgstr "Блокировка рекламы и трекеров"
+
+msgid "SafeSearch Enforced"
+msgstr "Безопасный поиск"
+
+msgid "Parental Control"
+msgstr "Родительский контроль"
+
+msgid "Rules"
+msgstr "Правила"
+
+msgid "Setup Guide"
+msgstr "Инструкция"
+
+msgid "Delete Device"
+msgstr "Удалить устройство"
+
+msgid "Are you sure you want to delete this device? This will revoke its DoH access."
+msgstr "Вы уверены, что хотите удалить это устройство? Доступ к DoH будет отозван."
+
+msgid "Connect"
+msgstr "Подключение"
+
+msgid "Device Token:"
+msgstr "Токен устройства:"
+
+msgid "Your Personalized DoH URL"
+msgstr "Ваш персональный адрес DoH"
+
+msgid "Copy"
+msgstr "Копировать"
+
+msgid "Copied"
+msgstr "Скопировано"
+
+msgid "Apple iOS & macOS (1-Click Profile)"
+msgstr "Apple iOS и macOS (Профиль в 1 клик)"
+
+msgid "Installs native encrypted DNS without installing any third-party apps."
+msgstr "Устанавливает зашифрованный DNS на уровне ОС без сторонних программ."
+
+msgid "Download .mobileconfig"
+msgstr "Скачать .mobileconfig"
+
+msgid "Android (Private DNS)"
+msgstr "Android (Персональный DNS)"
+
+msgid "Settings → Network & internet → Private DNS → Custom hostname:"
+msgstr "Настройки → Сеть и интернет → Персональный DNS-сервер → Имя хоста:"
+
+msgid "Chrome, Firefox & Edge (Secure DNS)"
+msgstr "Chrome, Firefox и Edge (Безопасный DNS)"
+
+msgid "Browser Settings → Privacy & Security → Use Secure DNS → Custom provider: paste the personalized DoH URL above."
+msgstr "Настройки браузера → Конфиденциальность и безопасность → Использовать безопасный DNS."
+
+msgid "Done"
+msgstr "Готово"
+
+msgid "Customize Filtering"
+msgstr "Настройка фильтрации"
+
+msgid "Tune blocked services and domain overrides"
+msgstr "Управление заблокированными сервисами и исключениями"
+
+msgid "Block Pre-configured Services"
+msgstr "Блокировка популярных сервисов"
+
+msgid "One-click blocking evaluated directly by AdGuard Home with zero performance loss."
+msgstr "Блокировка в один клик силами AdGuard Home без потери производительности."
+
+msgid "Custom Blocked Domains"
+msgstr "Заблокированные домены"
+
+msgid "Blocks specific domains exclusively on this device (e.g. distracting-site.com)."
+msgstr "Блокирует указанные домены только на этом устройстве."
+
+msgid "Allowlist Overrides"
+msgstr "Список исключений"
+
+msgid "Unblocks domains that might be blocked by global AdGuard filter lists."
+msgstr "Разблокирует домены, попавшие под общие списки фильтрации AdGuard."
+
+msgid "Add"
+msgstr "Добавить"
+
+msgid "Cancel"
+msgstr "Отмена"
+
+msgid "Applying..."
+msgstr "Сохранение..."
+
+msgid "Save Settings"
+msgstr "Сохранить настройки"
+
+msgid "Add New Device"
+msgstr "Добавить новое устройство"
+
+msgid "Device Name"
+msgstr "Имя устройства"
+
+msgid "e.g. Dominic's iPhone or Work Laptop"
+msgstr "напр. Мой iPhone или Рабочий ноутбук"
+
+msgid "A unique DoH URL token will be automatically assigned to this device."
+msgstr "Этому устройству будет автоматически присвоен уникальный DoH-токен."
+
+msgid "Registering..."
+msgstr "Регистрация..."
+
+msgid "Register Device"
+msgstr "Зарегистрировать устройство"
+
+msgid "Sign in with"
+msgstr "Войти через"
+
+msgid "Zero-trust encrypted DNS. Only authorized accounts authenticated via your identity provider can register devices and query DoH."
+msgstr "Зашифрованный DNS Zero-Trust. Только авторизованные пользователи могут регистрировать устройства."
+
+msgid "Quick Login as Developer"
+msgstr "Быстрый вход (разработчик)"
+
+msgid "Dev Mode Enabled"
+msgstr "Режим разработчика активен"
+
+msgid "Connecting to AdGuard Portal..."
+msgstr "Подключение к порталу AdGuard..."
+
+msgid "AdGuard DoH Hostname:"
+msgstr "Хост AdGuard DoH:"
+
+msgid "Source Code on GitHub"
+msgstr "Исходный код на GitHub"

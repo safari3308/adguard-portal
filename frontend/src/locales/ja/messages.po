@@ -1,0 +1,175 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2026-10-28 10:30+0700\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ja\n"
+
+msgid "AdGuard Portal"
+msgstr "AdGuard ポータル"
+
+msgid "Personal DNS-over-HTTPS"
+msgstr "個人専用 DNS-over-HTTPS"
+
+msgid "Logout"
+msgstr "ログアウト"
+
+msgid "Your Devices"
+msgstr "登録デバイス"
+
+msgid "Each device receives an isolated, authenticated DoH endpoint with custom filtering."
+msgstr "各デバイスに個別の認証済み DoH エンドポイントとカスタムフィルターが割り当てられます。"
+
+msgid "Add Device"
+msgstr "デバイスを追加"
+
+msgid "You have reached the maximum device quota"
+msgstr "最大登録デバイス数に達しました"
+
+msgid "Delete an inactive device to add another."
+msgstr "不要なデバイスを削除して追加してください。"
+
+msgid "No devices configured yet"
+msgstr "デバイスがまだ登録されていません"
+
+msgid "Register your phone, tablet, laptop, or home browser to obtain your secure DoH URL."
+msgstr "スマートフォン、タブレット、PC を登録して安全な DoH URL を取得しましょう。"
+
+msgid "Register Your First Device"
+msgstr "最初のデバイスを登録"
+
+msgid "Ad & Tracker Blocking"
+msgstr "広告・トラッカーのブロック"
+
+msgid "SafeSearch Enforced"
+msgstr "セーフサーチの強制"
+
+msgid "Parental Control"
+msgstr "ペアレンタルコントロール"
+
+msgid "Rules"
+msgstr "ルール"
+
+msgid "Setup Guide"
+msgstr "設定ガイド"
+
+msgid "Delete Device"
+msgstr "デバイスを削除"
+
+msgid "Are you sure you want to delete this device? This will revoke its DoH access."
+msgstr "このデバイスを削除してもよろしいですか？DoH へのアクセス権は取り消されます。"
+
+msgid "Connect"
+msgstr "接続"
+
+msgid "Device Token:"
+msgstr "デバイストークン:"
+
+msgid "Your Personalized DoH URL"
+msgstr "専用 DoH URL"
+
+msgid "Copy"
+msgstr "コピー"
+
+msgid "Copied"
+msgstr "コピー完了"
+
+msgid "Apple iOS & macOS (1-Click Profile)"
+msgstr "Apple iOS & macOS (1クリックプロファイル)"
+
+msgid "Installs native encrypted DNS without installing any third-party apps."
+msgstr "サードパーティ製アプリ不要で、OSネイティブの暗号化 DNS を構成します。"
+
+msgid "Download .mobileconfig"
+msgstr ".mobileconfig をダウンロード"
+
+msgid "Android (Private DNS)"
+msgstr "Android (プライベート DNS)"
+
+msgid "Settings → Network & internet → Private DNS → Custom hostname:"
+msgstr "設定 → ネットワークとインターネット → プライベート DNS → ホスト名："
+
+msgid "Chrome, Firefox & Edge (Secure DNS)"
+msgstr "Chrome、Firefox、Edge (セキュア DNS)"
+
+msgid "Browser Settings → Privacy & Security → Use Secure DNS → Custom provider: paste the personalized DoH URL above."
+msgstr "ブラウザの設定 → プライバシーとセキュリティ → セキュア DNS を使用 → カスタムプロバイダーに入力。"
+
+msgid "Done"
+msgstr "完了"
+
+msgid "Customize Filtering"
+msgstr "フィルターをカスタマイズ"
+
+msgid "Tune blocked services and domain overrides"
+msgstr "ブロック対象サービスおよびドメイン例外の設定"
+
+msgid "Block Pre-configured Services"
+msgstr "プリセットサービスのブロック"
+
+msgid "One-click blocking evaluated directly by AdGuard Home with zero performance loss."
+msgstr "AdGuard Home が直接高速評価し、パフォーマンス低下なしに遮断します。"
+
+msgid "Custom Blocked Domains"
+msgstr "ブロックドメイン"
+
+msgid "Blocks specific domains exclusively on this device (e.g. distracting-site.com)."
+msgstr "このデバイス限定で特定ドメインをブロックします。"
+
+msgid "Allowlist Overrides"
+msgstr "許可リスト"
+
+msgid "Unblocks domains that might be blocked by global AdGuard filter lists."
+msgstr "グローバルルールで誤検知されたドメインのブロックを解除します。"
+
+msgid "Add"
+msgstr "追加"
+
+msgid "Cancel"
+msgstr "キャンセル"
+
+msgid "Applying..."
+msgstr "保存中..."
+
+msgid "Save Settings"
+msgstr "設定を保存"
+
+msgid "Add New Device"
+msgstr "新しいデバイスを追加"
+
+msgid "Device Name"
+msgstr "デバイス名"
+
+msgid "e.g. Dominic's iPhone or Work Laptop"
+msgstr "例: iPhone または 仕事用ノートPC"
+
+msgid "A unique DoH URL token will be automatically assigned to this device."
+msgstr "このデバイスに固有の DoH トークンが自動的に発行されます。"
+
+msgid "Registering..."
+msgstr "登録中..."
+
+msgid "Register Device"
+msgstr "デバイスを登録"
+
+msgid "Sign in with"
+msgstr "ログイン："
+
+msgid "Zero-trust encrypted DNS. Only authorized accounts authenticated via your identity provider can register devices and query DoH."
+msgstr "ゼロトラスト暗号化 DNS。IDプロバイダーで承認されたアカウントのみがデバイスを登録できます。"
+
+msgid "Quick Login as Developer"
+msgstr "開発者クイックログイン"
+
+msgid "Dev Mode Enabled"
+msgstr "開発者モード有効"
+
+msgid "Connecting to AdGuard Portal..."
+msgstr "AdGuard ポータルに接続中..."
+
+msgid "AdGuard DoH Hostname:"
+msgstr "AdGuard DoH ホスト名："
+
+msgid "Source Code on GitHub"
+msgstr "GitHub ソースコード"

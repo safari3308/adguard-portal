@@ -1,0 +1,37 @@
+{
+  "name": "adguard-portal-frontend",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "lingui compile && tsc -b && vite build",
+    "extract": "lingui extract",
+    "compile": "lingui compile",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@lingui/core": "^6.10.1",
+    "@lingui/react": "^6.10.1",
+    "lucide-react": "^1.16.0",
+    "oidc-client-ts": "^3.1.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^8.0.9",
+    "@lingui/babel-plugin-lingui-macro": "^6.10.1",
+    "@lingui/cli": "^6.10.1",
+    "@lingui/format-po": "^6.10.1",
+    "@lingui/vite-plugin": "^6.10.1",
+    "@types/node": "^22.13.0",
+    "@types/react": "^19.0.8",
+    "@types/react-dom": "^19.0.3",
+    "@vitejs/plugin-react": "^4.3.4",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.5.1",
+    "tailwindcss": "^3.4.17",
+    "typescript": "~5.7.2",
+    "vite": "^6.1.0"
+  }
+}

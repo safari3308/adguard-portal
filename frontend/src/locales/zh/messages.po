@@ -1,0 +1,175 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2026-10-28 10:30+0700\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: zh\n"
+
+msgid "AdGuard Portal"
+msgstr "AdGuard 门户"
+
+msgid "Personal DNS-over-HTTPS"
+msgstr "个人专属 DNS-over-HTTPS"
+
+msgid "Logout"
+msgstr "退出登录"
+
+msgid "Your Devices"
+msgstr "您的设备"
+
+msgid "Each device receives an isolated, authenticated DoH endpoint with custom filtering."
+msgstr "每台设备均获得独立的、经过身份验证的专属 DoH 端点并支持自定义过滤规则。"
+
+msgid "Add Device"
+msgstr "添加设备"
+
+msgid "You have reached the maximum device quota"
+msgstr "您已达到设备上限配额"
+
+msgid "Delete an inactive device to add another."
+msgstr "请删除闲置设备以添加新设备。"
+
+msgid "No devices configured yet"
+msgstr "暂未配置任何设备"
+
+msgid "Register your phone, tablet, laptop, or home browser to obtain your secure DoH URL."
+msgstr "登记您的手机、平板、电脑或家庭浏览器即可获取专属安全 DoH 链接。"
+
+msgid "Register Your First Device"
+msgstr "注册您的第一台设备"
+
+msgid "Ad & Tracker Blocking"
+msgstr "广告与跟踪拦截"
+
+msgid "SafeSearch Enforced"
+msgstr "强制安全搜索 (SafeSearch)"
+
+msgid "Parental Control"
+msgstr "家长控制"
+
+msgid "Rules"
+msgstr "规则"
+
+msgid "Setup Guide"
+msgstr "配置指引"
+
+msgid "Delete Device"
+msgstr "删除设备"
+
+msgid "Are you sure you want to delete this device? This will revoke its DoH access."
+msgstr "确定要删除此设备吗？该设备的 DoH 访问权限将被立即撤销。"
+
+msgid "Connect"
+msgstr "连接"
+
+msgid "Device Token:"
+msgstr "设备标识符："
+
+msgid "Your Personalized DoH URL"
+msgstr "您的个性化 DoH 链接"
+
+msgid "Copy"
+msgstr "复制"
+
+msgid "Copied"
+msgstr "已复制"
+
+msgid "Apple iOS & macOS (1-Click Profile)"
+msgstr "Apple iOS 与 macOS (一键安装描述文件)"
+
+msgid "Installs native encrypted DNS without installing any third-party apps."
+msgstr "原生配置系统级加密 DNS，无需安装任何第三方应用。"
+
+msgid "Download .mobileconfig"
+msgstr "下载 .mobileconfig 文件"
+
+msgid "Android (Private DNS)"
+msgstr "Android (私人 DNS)"
+
+msgid "Settings → Network & internet → Private DNS → Custom hostname:"
+msgstr "设置 → 网络与互联网 → 私人 DNS → 提供商主机名："
+
+msgid "Chrome, Firefox & Edge (Secure DNS)"
+msgstr "Chrome、Firefox 与 Edge (安全 DNS)"
+
+msgid "Browser Settings → Privacy & Security → Use Secure DNS → Custom provider: paste the personalized DoH URL above."
+msgstr "浏览器设置 → 隐私与安全 → 使用安全 DNS → 自定义提供商：粘贴上方专属 DoH 链接。"
+
+msgid "Done"
+msgstr "完成"
+
+msgid "Customize Filtering"
+msgstr "定制过滤规则"
+
+msgid "Tune blocked services and domain overrides"
+msgstr "管理屏蔽服务及域名黑白名单"
+
+msgid "Block Pre-configured Services"
+msgstr "一键拦截常用服务"
+
+msgid "One-click blocking evaluated directly by AdGuard Home with zero performance loss."
+msgstr "由 AdGuard Home 底层高效匹配，毫秒级响应无性能损耗。"
+
+msgid "Custom Blocked Domains"
+msgstr "自定义屏蔽域名"
+
+msgid "Blocks specific domains exclusively on this device (e.g. distracting-site.com)."
+msgstr "仅针对当前设备拦截指定域名。"
+
+msgid "Allowlist Overrides"
+msgstr "白名单放行"
+
+msgid "Unblocks domains that might be blocked by global AdGuard filter lists."
+msgstr "放行可能被 AdGuard 全局规则误杀的域名。"
+
+msgid "Add"
+msgstr "添加"
+
+msgid "Cancel"
+msgstr "取消"
+
+msgid "Applying..."
+msgstr "正在保存..."
+
+msgid "Save Settings"
+msgstr "保存设置"
+
+msgid "Add New Device"
+msgstr "添加新设备"
+
+msgid "Device Name"
+msgstr "设备名称"
+
+msgid "e.g. Dominic's iPhone or Work Laptop"
+msgstr "例如：我的 iPhone 或 工作笔记本"
+
+msgid "A unique DoH URL token will be automatically assigned to this device."
+msgstr "系统将自动为此设备分配专属的 DoH 认证 Token。"
+
+msgid "Registering..."
+msgstr "正在注册..."
+
+msgid "Register Device"
+msgstr "注册设备"
+
+msgid "Sign in with"
+msgstr "登录方式："
+
+msgid "Zero-trust encrypted DNS. Only authorized accounts authenticated via your identity provider can register devices and query DoH."
+msgstr "零信任加密 DNS。只有经身份提供商授权的用户方可注册设备并使用 DoH。"
+
+msgid "Quick Login as Developer"
+msgstr "开发者快速登录"
+
+msgid "Dev Mode Enabled"
+msgstr "开发者模式已启用"
+
+msgid "Connecting to AdGuard Portal..."
+msgstr "正在连接 AdGuard 门户..."
+
+msgid "AdGuard DoH Hostname:"
+msgstr "AdGuard DoH 域名："
+
+msgid "Source Code on GitHub"
+msgstr "GitHub 开源代码"

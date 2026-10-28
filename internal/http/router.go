@@ -38,6 +38,7 @@ func NewRouter(cfg RouterConfig) http.Handler {
 	mux.Handle("GET /api/devices/{id}", authMiddleware(http.HandlerFunc(cfg.DeviceHandler.Get)))
 	mux.Handle("PATCH /api/devices/{id}", authMiddleware(http.HandlerFunc(cfg.DeviceHandler.Update)))
 	mux.Handle("DELETE /api/devices/{id}", authMiddleware(http.HandlerFunc(cfg.DeviceHandler.Delete)))
+	mux.Handle("POST /api/devices/{id}/ticket", authMiddleware(http.HandlerFunc(cfg.DeviceHandler.CreateTicket)))
 	mux.Handle("GET /api/devices/{id}/mobileconfig", authMiddleware(http.HandlerFunc(cfg.DeviceHandler.DownloadMobileConfig)))
 	mux.Handle("GET /api/services", authMiddleware(http.HandlerFunc(cfg.ServiceHandler.ListServices)))
 

@@ -83,10 +83,25 @@ export async function fetchServices(): Promise<BlockedService[]> {
   return res.json();
 }
 
-export async function getMobileConfigUrl(deviceId: string): Promise<string> {
-  const token = await getAccessToken();
-  if (token) {
-    return `/api/devices/${deviceId}/mobileconfig?token=${encodeURIComponent(token)}`;
+export async function createDownloadTicket(deviceId: string): Promise<string> {
+  const res = await fetchWithAuth(`/api/devices/${deviceId}/ticket`, { method: 'POST' });
+  if (!res.ok) {
+    throw new Error('Failed to create download ticket');
   }
-  return `/api/devices/${deviceId}/mobileconfig`;
+  const data = await res.json();
+  return data.ticket;
+}
+
+export async function getMobileConfigUrl(deviceId: string): Promise<string> {
+  try {
+    const ticket = await createDownloadTicket(deviceId);
+    return `/api/devices/${deviceId}/mobileconfig?ticket=${encodeURIComponent(ticket)}`;
+  } catch {
+    // Fallback to token if ticket endpoint unavailable
+    const token = await getAccessToken();
+    if (token) {
+      return `/api/devices/${deviceId}/mobileconfig?token=${encodeURIComponent(token)}`;
+    }
+    return `/api/devices/${deviceId}/mobileconfig`;
+  }
 }

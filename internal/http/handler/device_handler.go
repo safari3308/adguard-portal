@@ -5,18 +5,32 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"sync"
+	"time"
 
+	"github.com/google/uuid"
 	"github.com/safari3308/adguard-portal/internal/auth"
 	"github.com/safari3308/adguard-portal/internal/domain"
 	"github.com/safari3308/adguard-portal/internal/service"
 )
 
+type downloadTicket struct {
+	userID    string
+	deviceID  string
+	expiresAt time.Time
+}
+
 type DeviceHandler struct {
-	svc *service.DeviceService
+	svc     *service.DeviceService
+	tickets map[string]downloadTicket
+	mu      sync.Mutex
 }
 
 func NewDeviceHandler(svc *service.DeviceService) *DeviceHandler {
-	return &DeviceHandler{svc: svc}
+	return &DeviceHandler{
+		svc:     svc,
+		tickets: make(map[string]downloadTicket),
+	}
 }
 
 func (h *DeviceHandler) List(w http.ResponseWriter, r *http.Request) {
@@ -118,11 +132,74 @@ func (h *DeviceHandler) Delete(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNoContent)
 }
 
-func (h *DeviceHandler) DownloadMobileConfig(w http.ResponseWriter, r *http.Request) {
+func (h *DeviceHandler) CreateTicket(w http.ResponseWriter, r *http.Request) {
 	user := auth.UserFromContext(r.Context())
+	if user == nil {
+		writeError(w, http.StatusUnauthorized, "unauthorized")
+		return
+	}
 	id := r.PathValue("id")
+	// Verify device exists and belongs to user
+	_, err := h.svc.GetDevice(r.Context(), user.ID, id)
+	if err != nil {
+		if errors.Is(err, domain.ErrDeviceNotFound) {
+			writeError(w, http.StatusNotFound, "device not found")
+			return
+		}
+		writeError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
 
-	content, err := h.svc.GenerateMobileConfig(r.Context(), user.ID, id)
+	ticket := uuid.NewString()
+
+	h.mu.Lock()
+	now := time.Now()
+	// Clean up old expired tickets
+	for k, v := range h.tickets {
+		if now.After(v.expiresAt) {
+			delete(h.tickets, k)
+		}
+	}
+	h.tickets[ticket] = downloadTicket{
+		userID:    user.ID,
+		deviceID:  id,
+		expiresAt: now.Add(60 * time.Second),
+	}
+	h.mu.Unlock()
+
+	writeJSON(w, http.StatusOK, map[string]string{
+		"ticket": ticket,
+	})
+}
+
+func (h *DeviceHandler) DownloadMobileConfig(w http.ResponseWriter, r *http.Request) {
+	id := r.PathValue("id")
+	var userID string
+
+	ticket := r.URL.Query().Get("ticket")
+	if ticket != "" {
+		h.mu.Lock()
+		info, exists := h.tickets[ticket]
+		if exists {
+			delete(h.tickets, ticket) // single-use
+		}
+		h.mu.Unlock()
+
+		if !exists || time.Now().After(info.expiresAt) || info.deviceID != id {
+			writeError(w, http.StatusUnauthorized, "invalid or expired download ticket")
+			return
+		}
+		userID = info.userID
+	} else {
+		user := auth.UserFromContext(r.Context())
+		if user == nil {
+			writeError(w, http.StatusUnauthorized, "unauthorized")
+			return
+		}
+		userID = user.ID
+	}
+
+	content, err := h.svc.GenerateMobileConfig(r.Context(), userID, id)
 	if err != nil {
 		if errors.Is(err, domain.ErrDeviceNotFound) {
 			writeError(w, http.StatusNotFound, "device not found")

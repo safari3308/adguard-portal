@@ -228,6 +228,63 @@ func TestDeviceHandler(t *testing.T) {
 		t.Errorf("unexpected content type: %s", recMobile.Header().Get("Content-Type"))
 	}
 
+	// 7b. CreateTicket and download via ticket
+	reqTicket := withAuth(httptest.NewRequest(http.MethodPost, "/api/devices/"+created.ID+"/ticket", nil))
+	reqTicket.SetPathValue("id", created.ID)
+	recTicket := httptest.NewRecorder()
+	h.CreateTicket(recTicket, reqTicket)
+	if recTicket.Code != http.StatusOK {
+		t.Errorf("expected 200 for CreateTicket, got %d", recTicket.Code)
+	}
+	var ticketRes map[string]string
+	_ = json.NewDecoder(recTicket.Body).Decode(&ticketRes)
+	ticketVal := ticketRes["ticket"]
+	if ticketVal == "" {
+		t.Fatalf("expected non-empty ticket")
+	}
+
+	// Download using ticket (no auth in context/header)
+	reqTicketDl := httptest.NewRequest(http.MethodGet, "/api/devices/"+created.ID+"/mobileconfig?ticket="+ticketVal, nil)
+	reqTicketDl.SetPathValue("id", created.ID)
+	recTicketDl := httptest.NewRecorder()
+	h.DownloadMobileConfig(recTicketDl, reqTicketDl)
+	if recTicketDl.Code != http.StatusOK {
+		t.Errorf("expected 200 for ticket download, got %d", recTicketDl.Code)
+	}
+
+	// Ticket is single-use, second attempt should fail 401
+	recTicketDl2 := httptest.NewRecorder()
+	h.DownloadMobileConfig(recTicketDl2, reqTicketDl)
+	if recTicketDl2.Code != http.StatusUnauthorized {
+		t.Errorf("expected 401 on reused ticket, got %d", recTicketDl2.Code)
+	}
+
+	// CreateTicket - unauthorized
+	reqTicketUnauth := httptest.NewRequest(http.MethodPost, "/api/devices/"+created.ID+"/ticket", nil)
+	recTicketUnauth := httptest.NewRecorder()
+	h.CreateTicket(recTicketUnauth, reqTicketUnauth)
+	if recTicketUnauth.Code != http.StatusUnauthorized {
+		t.Errorf("expected 401 for unauth CreateTicket, got %d", recTicketUnauth.Code)
+	}
+
+	// CreateTicket - not found
+	reqTicket404 := withAuth(httptest.NewRequest(http.MethodPost, "/api/devices/fake/ticket", nil))
+	reqTicket404.SetPathValue("id", "fake")
+	recTicket404 := httptest.NewRecorder()
+	h.CreateTicket(recTicket404, reqTicket404)
+	if recTicket404.Code != http.StatusNotFound {
+		t.Errorf("expected 404 for CreateTicket fake, got %d", recTicket404.Code)
+	}
+
+	// DownloadMobileConfig - unauthenticated without ticket
+	reqMobileNoAuth := httptest.NewRequest(http.MethodGet, "/api/devices/"+created.ID+"/mobileconfig", nil)
+	reqMobileNoAuth.SetPathValue("id", created.ID)
+	recMobileNoAuth := httptest.NewRecorder()
+	h.DownloadMobileConfig(recMobileNoAuth, reqMobileNoAuth)
+	if recMobileNoAuth.Code != http.StatusUnauthorized {
+		t.Errorf("expected 401 for MobileConfig without auth or ticket, got %d", recMobileNoAuth.Code)
+	}
+
 	// DownloadMobileConfig - not found
 	reqMobile404 := withAuth(httptest.NewRequest(http.MethodGet, "/api/devices/fake/mobileconfig", nil))
 	reqMobile404.SetPathValue("id", "fake")

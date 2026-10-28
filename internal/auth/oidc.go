@@ -90,6 +90,10 @@ func (v *Validator) Middleware(next http.Handler) http.Handler {
 			tokenString = parts[1]
 		} else if tokenParam := r.URL.Query().Get("token"); tokenParam != "" {
 			tokenString = tokenParam
+		} else if r.URL.Query().Get("ticket") != "" {
+			// Bypass auth header check for single-use download tickets (validated by handler)
+			next.ServeHTTP(w, r)
+			return
 		} else {
 			http.Error(w, `{"error":"missing authorization header"}`, http.StatusUnauthorized)
 			return

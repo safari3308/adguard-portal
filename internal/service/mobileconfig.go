@@ -53,6 +53,21 @@ const mobileConfigTemplate = `<?xml version="1.0" encoding="UTF-8"?>
                 <key>ServerURL</key>
                 <string>https://{{ .DOHDomain }}/dns-query/{{ .ClientToken }}</string>
             </dict>
+            <key>ProhibitDisablement</key>
+            <false/>
+            <key>OnDemandRules</key>
+            <array>
+                <dict>
+                    <key>Action</key>
+                    <string>Connect</string>
+                    <key>URLStringProbe</key>
+                    <string>https://{{ .DOHDomain }}/</string>
+                </dict>
+                <dict>
+                    <key>Action</key>
+                    <string>Disconnect</string>
+                </dict>
+            </array>
         </dict>
     </array>
 </dict>

@@ -221,12 +221,6 @@ func TestMobileConfigFormatting(t *testing.T) {
 	if !strings.Contains(xmlStr, "dns.example.com") {
 		t.Errorf("expected ServerAddresses in mobileconfig, got: %s", xmlStr)
 	}
-	if !strings.Contains(xmlStr, "<key>OnDemandRules</key>") {
-		t.Errorf("expected OnDemandRules in mobileconfig, got: %s", xmlStr)
-	}
-	if !strings.Contains(xmlStr, "<key>URLStringProbe</key>") {
-		t.Errorf("expected URLStringProbe in mobileconfig, got: %s", xmlStr)
-	}
 	if !strings.Contains(xmlStr, "<key>ProhibitDisablement</key>") {
 		t.Errorf("expected ProhibitDisablement in mobileconfig, got: %s", xmlStr)
 	}

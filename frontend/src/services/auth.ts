@@ -10,6 +10,7 @@ export async function initAuth(config: AppConfig): Promise<UserManager | null> {
     userManager = new UserManager({
       authority: config.oidc_issuer,
       client_id: config.oidc_client_id,
+      client_secret: config.oidc_client_secret || undefined,
       redirect_uri: `${origin}/`,
       post_logout_redirect_uri: `${origin}/`,
       response_type: 'code',

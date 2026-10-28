@@ -61,6 +61,7 @@ func main() {
 		DOHDomain:         cfg.DOHDomain,
 		OIDCIssuer:        cfg.OIDCIssuer,
 		OIDCClientID:      cfg.OIDCClientID,
+		OIDCClientSecret:  cfg.OIDCClientSecret,
 		OIDCScopes:        cfg.OIDCScopes,
 		OIDCProviderName:  cfg.OIDCProviderName,
 		MaxDevicesPerUser: cfg.MaxDevicesPerUser,

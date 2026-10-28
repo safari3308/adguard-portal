@@ -10,8 +10,8 @@ func TestConfigLoadAndValidate(t *testing.T) {
 	// Clean env before test
 	envVars := []string{
 		"PORT", "DB_PATH", "DOH_DOMAIN", "AGH_URL", "AGH_USER", "AGH_PASSWORD",
-		"OIDC_ISSUER", "OIDC_CLIENT_ID", "OIDC_SCOPES", "OIDC_PROVIDER_NAME",
-		"ZITADEL_ISSUER", "ZITADEL_CLIENT_ID", "MAX_DEVICES_PER_USER",
+		"OIDC_ISSUER", "OIDC_CLIENT_ID", "OIDC_CLIENT_SECRET", "OIDC_SCOPES", "OIDC_PROVIDER_NAME",
+		"ZITADEL_ISSUER", "ZITADEL_CLIENT_ID", "ZITADEL_CLIENT_SECRET", "MAX_DEVICES_PER_USER",
 		"CORS_ORIGIN", "DEV_MODE",
 	}
 	for _, env := range envVars {
@@ -79,12 +79,16 @@ func TestConfigLoadAndValidate(t *testing.T) {
 	// 4. Test OIDC_ISSUER taking precedence over ZITADEL_ISSUER
 	os.Setenv("OIDC_ISSUER", "https://oidc.example.com")
 	os.Setenv("OIDC_CLIENT_ID", "oidc-client-1")
+	os.Setenv("OIDC_CLIENT_SECRET", "secret-123")
 	cfg3, _ := Load()
 	if cfg3.OIDCIssuer != "https://oidc.example.com" {
 		t.Errorf("expected OIDC_ISSUER override, got %s", cfg3.OIDCIssuer)
 	}
 	if cfg3.OIDCClientID != "oidc-client-1" {
 		t.Errorf("expected OIDC_CLIENT_ID override, got %s", cfg3.OIDCClientID)
+	}
+	if cfg3.OIDCClientSecret != "secret-123" {
+		t.Errorf("expected OIDC_CLIENT_SECRET, got %s", cfg3.OIDCClientSecret)
 	}
 
 	// Clean up

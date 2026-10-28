@@ -31,6 +31,7 @@ export interface AppConfig {
   doh_domain: string;
   oidc_issuer: string;
   oidc_client_id: string;
+  oidc_client_secret?: string;
   oidc_scopes?: string;
   oidc_provider_name?: string;
   max_devices_per_user: number;

@@ -17,6 +17,7 @@ type Config struct {
 	AGHPassword       string
 	OIDCIssuer        string
 	OIDCClientID      string
+	OIDCClientSecret  string
 	OIDCScopes        string
 	OIDCProviderName  string
 	MaxDevicesPerUser int
@@ -38,6 +39,7 @@ func Load() (*Config, error) {
 	// Generic standard OIDC configuration (with backwards compatible fallbacks)
 	oidcIssuer := getEnv("OIDC_ISSUER", getEnv("ZITADEL_ISSUER", ""))
 	oidcClientID := getEnv("OIDC_CLIENT_ID", getEnv("ZITADEL_CLIENT_ID", ""))
+	oidcClientSecret := getEnv("OIDC_CLIENT_SECRET", getEnv("ZITADEL_CLIENT_SECRET", ""))
 	oidcScopes := getEnv("OIDC_SCOPES", "openid profile email")
 	oidcProviderName := getEnv("OIDC_PROVIDER_NAME", "Single Sign-On")
 
@@ -54,6 +56,7 @@ func Load() (*Config, error) {
 		AGHPassword:       aghPassword,
 		OIDCIssuer:        oidcIssuer,
 		OIDCClientID:      oidcClientID,
+		OIDCClientSecret:  oidcClientSecret,
 		OIDCScopes:        oidcScopes,
 		OIDCProviderName:  oidcProviderName,
 		MaxDevicesPerUser: maxDevices,

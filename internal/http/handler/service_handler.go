@@ -10,6 +10,7 @@ type ConfigResponse struct {
 	DOHDomain         string `json:"doh_domain"`
 	OIDCIssuer        string `json:"oidc_issuer"`
 	OIDCClientID      string `json:"oidc_client_id"`
+	OIDCClientSecret  string `json:"oidc_client_secret,omitempty"`
 	OIDCScopes        string `json:"oidc_scopes"`
 	OIDCProviderName  string `json:"oidc_provider_name"`
 	MaxDevicesPerUser int    `json:"max_devices_per_user"`

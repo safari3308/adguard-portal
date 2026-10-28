@@ -40,6 +40,16 @@ jobs:
           pnpm install --frozen-lockfile
           pnpm build
 
+      - name: Install Playwright browsers
+        run: |
+          cd frontend
+          pnpm exec playwright install chromium --with-deps
+
+      - name: Run Playwright E2E tests
+        run: |
+          cd frontend
+          pnpm test:e2e
+
       - name: Run Go tests with coverage
         run: |
           go test -v -coverprofile=coverage.out ./...

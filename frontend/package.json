@@ -8,7 +8,8 @@
     "build": "lingui compile && tsc -b && vite build",
     "extract": "lingui extract",
     "compile": "lingui compile",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@lingui/core": "^6.10.1",
@@ -24,6 +25,7 @@
     "@lingui/cli": "^6.10.1",
     "@lingui/format-po": "^6.10.1",
     "@lingui/vite-plugin": "^6.10.1",
+    "@playwright/test": "^1.64.1",
     "@types/node": "^22.13.0",
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",

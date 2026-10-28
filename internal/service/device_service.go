@@ -19,6 +19,7 @@ type DeviceService struct {
 	agh        domain.AGHClient
 	maxDevices int
 	dohDomain  string
+	signer     ProfileSigner
 }
 
 func NewDeviceService(repo domain.DeviceRepository, agh domain.AGHClient, maxDevices int, dohDomain string) *DeviceService {
@@ -28,6 +29,10 @@ func NewDeviceService(repo domain.DeviceRepository, agh domain.AGHClient, maxDev
 		maxDevices: maxDevices,
 		dohDomain:  dohDomain,
 	}
+}
+
+func (s *DeviceService) SetSigner(signer ProfileSigner) {
+	s.signer = signer
 }
 
 func (s *DeviceService) CreateDevice(ctx context.Context, userID string, input domain.CreateDeviceInput) (*domain.Device, error) {
@@ -167,7 +172,16 @@ func (s *DeviceService) GenerateMobileConfig(ctx context.Context, userID, device
 	if err != nil {
 		return nil, err
 	}
-	return GenerateMobileConfig(device, s.dohDomain)
+	raw, err := GenerateMobileConfig(device, s.dohDomain)
+	if err != nil {
+		return nil, err
+	}
+	if s.signer != nil {
+		if signed, err := s.signer.Sign(raw); err == nil {
+			return signed, nil
+		}
+	}
+	return raw, nil
 }
 
 func generateToken() (string, error) {

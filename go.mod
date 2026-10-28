@@ -7,3 +7,5 @@ require (
 	github.com/google/uuid v1.6.0
 	github.com/mattn/go-sqlite3 v1.14.52
 )
+
+require go.mozilla.org/pkcs7 v0.10.0 // indirect

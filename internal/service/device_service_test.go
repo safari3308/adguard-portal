@@ -145,6 +145,19 @@ func TestDeviceLifecycle(t *testing.T) {
 		t.Fatalf("failed to generate mobileconfig: %v", err)
 	}
 
+	// Test signed MobileConfig with signer
+	certPEM, keyPEM := generateTestCertAndKey(t, true)
+	signer, err := NewPKCS7Signer(certPEM, keyPEM)
+	if err != nil {
+		t.Fatalf("failed to create signer: %v", err)
+	}
+	svc.SetSigner(signer)
+	signedConfig, err := svc.GenerateMobileConfig(ctx, testUser.ID, d1.ID)
+	if err != nil || len(signedConfig) <= len(configXML) {
+		t.Fatalf("failed to generate signed mobileconfig: %v", err)
+	}
+	svc.SetSigner(nil)
+
 	// Generate MobileConfig unauthorized
 	_, err = svc.GenerateMobileConfig(ctx, "other_user", d1.ID)
 	if err != domain.ErrUnauthorizedDevice {

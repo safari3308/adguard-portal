@@ -50,6 +50,15 @@ func main() {
 
 	// Services
 	deviceSvc := service.NewDeviceService(deviceRepo, aghClient, cfg.MaxDevicesPerUser, cfg.DOHDomain)
+	if cfg.SigningCertPath != "" && cfg.SigningKeyPath != "" {
+		signer, err := service.NewPKCS7SignerFromFiles(cfg.SigningCertPath, cfg.SigningKeyPath)
+		if err != nil {
+			log.Printf("WARN: Failed to initialize profile SSL signer: %v", err)
+		} else {
+			deviceSvc.SetSigner(signer)
+			log.Println("Apple .mobileconfig SSL signer enabled.")
+		}
+	}
 
 	// Auth Validator (Standard OIDC)
 	authValidator := auth.NewValidator(cfg.OIDCIssuer, cfg.OIDCInternalURL, cfg.OIDCClientID, cfg.DevMode, userRepo)

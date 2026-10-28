@@ -21,6 +21,8 @@ type Config struct {
 	OIDCClientSecret  string
 	OIDCScopes        string
 	OIDCProviderName  string
+	SigningCertPath   string
+	SigningKeyPath    string
 	MaxDevicesPerUser int
 	CORSOrigin        string
 	DevMode           bool
@@ -45,6 +47,9 @@ func Load() (*Config, error) {
 	oidcScopes := getEnv("OIDC_SCOPES", "openid profile email")
 	oidcProviderName := getEnv("OIDC_PROVIDER_NAME", "Single Sign-On")
 
+	signingCertPath := getEnv("SIGNING_CERT_PATH", "")
+	signingKeyPath := getEnv("SIGNING_KEY_PATH", "")
+
 	maxDevices := getEnvAsInt("MAX_DEVICES_PER_USER", 10)
 	corsOrigin := getEnv("CORS_ORIGIN", "*")
 	devMode := getEnvAsBool("DEV_MODE", false)
@@ -62,6 +67,8 @@ func Load() (*Config, error) {
 		OIDCClientSecret:  oidcClientSecret,
 		OIDCScopes:        oidcScopes,
 		OIDCProviderName:  oidcProviderName,
+		SigningCertPath:   signingCertPath,
+		SigningKeyPath:    signingKeyPath,
 		MaxDevicesPerUser: maxDevices,
 		CORSOrigin:        corsOrigin,
 		DevMode:           devMode,
